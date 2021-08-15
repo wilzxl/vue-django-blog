@@ -1,8 +1,10 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework import status
+# from rest_framework.views import APIView
 from rest_framework import generics
+# from rest_framework.permissions import IsAdminUser
+from .permissions import IsAdminUserOrReadOnly
 
 from .models import Article
 from .serializers import ArticleListSerializer, ArticleDetailSerializer
@@ -11,11 +13,13 @@ from .serializers import ArticleListSerializer, ArticleDetailSerializer
 class ArticleDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleDetailSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 class ArticleList(generics.ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleListSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 # @api_view(['GET', 'POST'])
 # def article_list(request):
